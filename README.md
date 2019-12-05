@@ -26,10 +26,10 @@ The code and usage examples will be updated soon. Please stay tuned.
 ## Citation
 If you find this work is useful for your research, please cite our paper:
 ```
-@inproceedings{choi2019starganv2,
-title={StarGAN v2: Diverse Image Synthesis for Multiple Domains},
-author={Yunjey Choi and Youngjung Uh and Jaejun Yoo and Jung-Woo Ha},
-booktitle={arXiv preprint},
-year={2019}
+@article{choi2019starganv2,
+  title={StarGAN v2: Diverse Image Synthesis for Multiple Domains},
+  author={Yunjey Choi and Youngjung Uh and Jaejun Yoo and Jung-Woo Ha},
+  journal={arXiv preprint arXiv:1912.01865},
+  year={2019}
 }
 ```
