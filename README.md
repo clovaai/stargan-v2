@@ -24,7 +24,7 @@ The source code, pretrained models, and dataset will be available under [Creativ
 The code and usage examples will be updated soon. Please stay tuned.
 
 ## Citation
-If you find this work is useful for your research, please cite our paper:
+If you find this work useful for your research, please cite our paper:
 ```
 @article{choi2019starganv2,
   title={StarGAN v2: Diverse Image Synthesis for Multiple Domains},
