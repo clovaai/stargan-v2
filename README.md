@@ -1,5 +1,5 @@
 
-## StarGAN v2 - Official PyTorch Implementation [[Paper]](https://arxiv.org/abs/1912.01865) [[Video]](https://twitter.com/yunjey_choi)
+## StarGAN v2 - Official PyTorch Implementation
 
 <p align="left"><img width="99%" src="assets/teaser_github.jpg" /></p>
 
