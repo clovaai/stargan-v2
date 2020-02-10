@@ -26,7 +26,6 @@ We release a new dataset of animal faces, Animal Faces-HQ (AFHQ), consisting of 
 ```bash
 cd stargan-v2
 bash download.sh afhq
-unzip afhq.zip ./
 ```
 
 ## License
