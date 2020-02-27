@@ -1,5 +1,5 @@
 
-## StarGAN v2 - Official PyTorch Implementation
+## StarGAN v2: Diverse Image Synthesis for Multiple Domains (CVPR 2020)
 
 <p align="left"><img width="99%" src="assets/teaser_github.jpg" /></p>
 
@@ -37,11 +37,12 @@ The code and usage examples will be updated soon. Please stay tuned.
 
 ## Citation
 If you find this work useful for your research, please cite our paper:
+
 ```
-@article{choi2019starganv2,
+@inproceedings{choi2020starganv2,
   title={StarGAN v2: Diverse Image Synthesis for Multiple Domains},
   author={Yunjey Choi and Youngjung Uh and Jaejun Yoo and Jung-Woo Ha},
-  journal={arXiv preprint arXiv:1912.01865},
-  year={2019}
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year={2020}
 }
 ```
