@@ -39,10 +39,10 @@ The code and usage examples will be updated soon. Please stay tuned.
 If you find this work useful for your research, please cite our paper:
 
 ```
-@inproceedings{choi2020starganv2,
+@article{choi2020starganv2,
   title={StarGAN v2: Diverse Image Synthesis for Multiple Domains},
   author={Yunjey Choi and Youngjung Uh and Jaejun Yoo and Jung-Woo Ha},
-  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year={2020}
+  journal={arXiv preprint arXiv:1912.01865},
+  year={2019}
 }
 ```
