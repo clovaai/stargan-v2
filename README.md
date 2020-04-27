@@ -143,7 +143,7 @@ bash download.sh afhq-dataset
 ```
 
 ## License
-The source code, pretrained models, and dataset is available under [Creative Commons BY-NC 4.0](https://github.com/clovaai/stargan-v2/blob/master/LICENSE) license by NAVER Corporation. You can **use, copy, tranform and build upon** the material for **non-commercial purposes** as long as you give **appropriate credit** by citing our paper, and indicate if changes were made. 
+The source code, pre-trained models, and dataset are available under [Creative Commons BY-NC 4.0](https://github.com/clovaai/stargan-v2/blob/master/LICENSE) license by NAVER Corporation. You can **use, copy, tranform and build upon** the material for **non-commercial purposes** as long as you give **appropriate credit** by citing our paper, and indicate if changes were made. 
 
 For business inquiries, please contact clova-jobs@navercorp.com.<br/>	
 For technical and other inquires, please contact yunjey.choi@navercorp.com.
