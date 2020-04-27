@@ -16,7 +16,7 @@
 Clone this repository:
 
 ```bash
-git clone https://github.com/yunjey/stargan-v2.git
+git clone https://github.com/clovaai/stargan-v2.git
 cd stargan-v2/
 ```
 
