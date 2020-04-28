@@ -74,7 +74,7 @@ def calculate_metrics(nets, args, step, mode):
                     else:
                         try:
                             x_ref = next(iter_ref).to(device)
-                        except (NameError, StopIteration):
+                        except:
                             iter_ref = iter(loader_ref)
                             x_ref = next(iter_ref).to(device)
 
