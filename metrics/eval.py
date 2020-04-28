@@ -58,6 +58,7 @@ def calculate_metrics(nets, args, step, mode):
             os.makedirs(path_fake)
 
             lpips_values = []
+            iter_ref = iter(loader_ref)
             print('Generating images and calculating LPIPS for %s...' % task)
             for i, x_src in enumerate(tqdm(loader_src, total=len(loader_src))):
                 N = x_src.size(0)
