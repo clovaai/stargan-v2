@@ -60,7 +60,11 @@ class LPIPS(nn.Module):
 
     def _load_lpips_weights(self):
         own_state_dict = self.state_dict()
-        state_dict = torch.load('metrics/lpips_weights.ckpt')
+        if torch.cuda.is_available():
+            state_dict = torch.load('metrics/lpips_weights.ckpt')
+        else:
+            state_dict = torch.load('metrics/lpips_weights.ckpt',
+                                    map_location=torch.device('cpu'))
         for name, param in state_dict.items():
             if name in own_state_dict:
                 own_state_dict[name].copy_(param)

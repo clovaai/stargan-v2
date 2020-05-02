@@ -213,7 +213,10 @@ class FAN(nn.Module):
             self.load_pretrained_weights(fname_pretrained)
 
     def load_pretrained_weights(self, fname):
-        checkpoint = torch.load(fname)  # map_location=torch.device('cpu'))
+        if torch.cuda.is_available():
+            checkpoint = torch.load(fname)
+        else:
+            checkpoint = torch.load(fname, map_location=torch.device('cpu'))
         model_weights = self.state_dict()
         model_weights.update({k: v for k, v in checkpoint['state_dict'].items()
                               if k in model_weights})
