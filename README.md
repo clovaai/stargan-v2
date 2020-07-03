@@ -17,6 +17,9 @@ Click the figure to watch the teaser video. <br/>
 
 [![IMAGE ALT TEXT HERE](assets/youtube_video.jpg)](https://youtu.be/0EVh5Ki4dIY)
 
+## TensorFlow implementation
+The TensorFlow implementation of StarGAN v2 by our team member junho can be found at [clovaai/stargan-v2-tensorflow](https://github.com/clovaai/stargan-v2-tensorflow).
+
 ## Software installation
 Clone this repository:
 
