@@ -123,9 +123,10 @@ class AdainResBlk(nn.Module):
 class HighPass(nn.Module):
     def __init__(self, w_hpf, device):
         super(HighPass, self).__init__()
-        self.filter = torch.tensor([[-1, -1, -1],
-                                    [-1, 8., -1],
-                                    [-1, -1, -1]]).to(device) / w_hpf
+        self.register_buffer('filter',
+                             torch.tensor([[-1, -1, -1],
+                                           [-1, 8., -1],
+                                           [-1, -1, -1]]) / w_hpf)
 
     def forward(self, x):
         filter = self.filter.unsqueeze(0).unsqueeze(1).repeat(x.size(1), 1, 1, 1)
@@ -280,10 +281,10 @@ class Discriminator(nn.Module):
 
 
 def build_model(args):
-    generator = Generator(args.img_size, args.style_dim, w_hpf=args.w_hpf)
-    mapping_network = MappingNetwork(args.latent_dim, args.style_dim, args.num_domains)
-    style_encoder = StyleEncoder(args.img_size, args.style_dim, args.num_domains)
-    discriminator = Discriminator(args.img_size, args.num_domains)
+    generator = nn.DataParallel(Generator(args.img_size, args.style_dim, w_hpf=args.w_hpf))
+    mapping_network = nn.DataParallel(MappingNetwork(args.latent_dim, args.style_dim, args.num_domains))
+    style_encoder = nn.DataParallel(StyleEncoder(args.img_size, args.style_dim, args.num_domains))
+    discriminator = nn.DataParallel(Discriminator(args.img_size, args.num_domains))
     generator_ema = copy.deepcopy(generator)
     mapping_network_ema = copy.deepcopy(mapping_network)
     style_encoder_ema = copy.deepcopy(style_encoder)
@@ -297,7 +298,8 @@ def build_model(args):
                      style_encoder=style_encoder_ema)
 
     if args.w_hpf > 0:
-        fan = FAN(fname_pretrained=args.wing_path).eval()
+        fan = nn.DataParallel(FAN(fname_pretrained=args.wing_path).eval())
+        fan.get_heatmap = fan.module.get_heatmap
         nets.fan = fan
         nets_ema.fan = fan
 
