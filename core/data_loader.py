@@ -152,12 +152,7 @@ def get_eval_loader(root, img_size=256, batch_size=32,
 def get_test_loader(root, img_size=256, batch_size=32,
                     shuffle=True, num_workers=4):
     print('Preparing DataLoader for the generation phase...')
-    transform = transforms.Compose([
-        transforms.Resize([img_size, img_size]),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5, 0.5, 0.5],
-                             std=[0.5, 0.5, 0.5]),
-    ])
+    transform = get_test_transform(img_size)
 
     dataset = ImageFolder(root, transform)
     return data.DataLoader(dataset=dataset,
@@ -165,6 +160,15 @@ def get_test_loader(root, img_size=256, batch_size=32,
                            shuffle=shuffle,
                            num_workers=num_workers,
                            pin_memory=True)
+
+
+def get_test_transform(img_size):
+    return transforms.Compose([
+        transforms.Resize([img_size, img_size]),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.5, 0.5, 0.5],
+                             std=[0.5, 0.5, 0.5]),
+    ])
 
 
 class InputFetcher:

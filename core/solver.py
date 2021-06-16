@@ -13,6 +13,7 @@ from os.path import join as ospj
 import time
 import datetime
 from munch import Munch
+from PIL import Image
 
 import torch
 import torch.nn as nn
@@ -20,7 +21,7 @@ import torch.nn.functional as F
 
 from core.model import build_model
 from core.checkpoint import CheckpointIO
-from core.data_loader import InputFetcher
+from core.data_loader import InputFetcher, get_test_transform
 import core.utils as utils
 from metrics.eval import calculate_metrics
 
@@ -196,6 +197,62 @@ class Solver(nn.Module):
         self._load_checkpoint(args.resume_iter)
         calculate_metrics(nets_ema, args, step=resume_iter, mode='latent')
         calculate_metrics(nets_ema, args, step=resume_iter, mode='reference')
+
+    @torch.no_grad()
+    def predict(self, src_img: Image.Image, ref_img: Image.Image, ref_class: str) -> Image.Image:
+        """ Performs StarGAN v2 image synthesis with 1 source and 1 reference image
+
+        Adapted from `utils.translate_using_reference`
+
+        Parameters
+        ----------
+        src_img : PIL.Image.Image
+            Source image as a PIL image
+        ref_img : PIL.Image.Image
+            Reference image as a PIL image
+        ref_class : {'female', 'male'}
+            Label of reference image
+
+        Returns
+        -------
+        PIL.Image.Image
+            Generated image as a PIL image
+
+        Notes
+        -----
+        You should preload checkpoint by calling `Solver._load_checkpoint(args.resume_iter)`
+        before running predictions. Preloading makes prediction almost twice as fast.
+
+        """
+        # `ref_class` is currently hardcoded
+        assert ref_class in ('female', 'male')
+        args = self.args
+        nets_ema = self.nets_ema
+
+        # You should preload checkpoint by calling `Solver._load_checkpoint(args.resume_iter)`
+        # before running predictions. Preloading makes prediction almost twice as fast
+        # Comment out code below if you don't want to preload
+        # self._load_checkpoint(args.resume_iter)
+
+        # transformation and unsqueezing
+        test_transform = get_test_transform(args.img_size)
+        src_img = test_transform(src_img).unsqueeze(0).to(self.device)
+        ref_img = test_transform(ref_img).unsqueeze(0).to(self.device)
+
+        ref_class = torch.tensor([int(ref_class == 'male')]).to(self.device)
+
+        masks = nets_ema.fan.get_heatmap(src_img) if args.w_hpf > 0 else None
+        style_ref = nets_ema.style_encoder(ref_img, ref_class)
+        x_fake = nets_ema.generator(src_img, style_ref, masks=masks)
+
+        # transform generated image
+        x_fake = x_fake.squeeze()
+        x_fake = utils.denormalize(x_fake)
+        x_fake = x_fake.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0)
+        x_fake = x_fake.to('cpu', torch.uint8).numpy()
+
+        # return image as PIL Image
+        return Image.fromarray(x_fake)
 
 
 def compute_d_loss(nets, args, x_real, y_org, y_trg, z_trg=None, x_ref=None, masks=None):
