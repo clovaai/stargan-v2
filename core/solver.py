@@ -202,6 +202,8 @@ class Solver(nn.Module):
     def predict(self, src_img: Image.Image, ref_img: Image.Image, ref_class: str) -> Image.Image:
         """ Performs StarGAN v2 image synthesis with 1 source and 1 reference image
 
+        Adapted from `utils.translate_using_reference`
+
         Parameters
         ----------
         src_img : PIL.Image.Image
