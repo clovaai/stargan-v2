@@ -18,3 +18,15 @@ LOGGING_CONFIG = {
         'handlers': ['console', 'file']
     }
 }
+
+MODEL_ARGS = {
+    'img_size': 256,
+    'style_dim': 64,
+    'w_hpf': 1.0,
+    'latent_dim': 16,
+    'num_domains': 2,
+    'wing_path': './expr/checkpoints/wing.ckpt',
+    'resume_iter': 100000,
+    'checkpoint_dir': './expr/checkpoints/celeba_hq',
+    'mode': 'sample'
+}
