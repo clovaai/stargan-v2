@@ -10,7 +10,8 @@ dictConfig(LOGGING_CONFIG)
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object('config')
-    # app.config.from_pyfile('config.py')
+    # override config from config.py in the instance folder if it exists
+    app.config.from_pyfile('config.py', silent=True)
 
     # init model store
     from flask_app.model import init_model_store
