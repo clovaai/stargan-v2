@@ -20,3 +20,8 @@ dependencies:
     - tqdm==4.43.0
     - munch==2.5.0
     - Flask==1.1.2
+    - sqlalchemy==1.3.22
+    - flask-restful==0.3.8
+    - Flask-SQLAlchemy==2.4.4
+    - flask-marshmallow==0.14.0
+    - marshmallow-sqlalchemy==0.24.1
