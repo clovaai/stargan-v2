@@ -29,7 +29,8 @@ def predict():
         output_img = model.predict({
             'src_img': base64_to_image(req['src_img']),
             'ref_img': base64_to_image(req['ref_img']),
-            'ref_class': req['ref_class']
+            'ref_class': req['ref_class'],
+            'face_aligner': model_store.get('face_aligner').predictor if req.get('align_face') else None
         })
 
         # convert output image from PIL image to base64 string
