@@ -26,6 +26,7 @@ MODEL_ARGS = {
     'latent_dim': 16,
     'num_domains': 2,
     'wing_path': './expr/checkpoints/wing.ckpt',
+    'lm_path': './expr/checkpoints/celeba_lm_mean.npz',
     'resume_iter': 100000,
     'checkpoint_dir': './expr/checkpoints/celeba_hq',
     'mode': 'sample'

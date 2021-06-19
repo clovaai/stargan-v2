@@ -12,7 +12,7 @@ dependencies:
   - x264=1!152.20180717
   - ffmpeg=4.0.2
   - pip:
-    - opencv-python==4.1.2.30 
+    - opencv-python==4.2.0.34
     - ffmpeg-python==0.2.0
     - scikit-image==0.16.2
     - pillow==7.0.0 

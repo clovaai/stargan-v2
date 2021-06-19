@@ -12,6 +12,7 @@ import os
 from os.path import join as ospj
 import time
 import datetime
+import logging
 from munch import Munch
 from PIL import Image
 
@@ -23,6 +24,7 @@ from core.model import build_model
 from core.checkpoint import CheckpointIO
 from core.data_loader import InputFetcher, get_test_transform
 import core.utils as utils
+from core.wing import FaceAligner
 from metrics.eval import calculate_metrics
 
 
@@ -199,7 +201,8 @@ class Solver(nn.Module):
         calculate_metrics(nets_ema, args, step=resume_iter, mode='reference')
 
     @torch.no_grad()
-    def predict(self, src_img: Image.Image, ref_img: Image.Image, ref_class: str) -> Image.Image:
+    def predict(self, src_img: Image.Image, ref_img: Image.Image,
+                ref_class: str, face_aligner: FaceAligner = None) -> Image.Image:
         """ Performs StarGAN v2 image synthesis with 1 source and 1 reference image
 
         Adapted from `utils.translate_using_reference`
@@ -212,6 +215,9 @@ class Solver(nn.Module):
             Reference image as a PIL image
         ref_class : {'female', 'male'}
             Label of reference image
+        face_aligner : FaceAligner, default=None
+            FaceAligner object used to perform face alignment on source and reference images
+            before style transfer
 
         Returns
         -------
@@ -238,6 +244,14 @@ class Solver(nn.Module):
         test_transform = get_test_transform(args.img_size)
         src_img = test_transform(src_img).unsqueeze(0).to(self.device)
         ref_img = test_transform(ref_img).unsqueeze(0).to(self.device)
+
+        if face_aligner and isinstance(face_aligner, FaceAligner):
+            logging.info("Aligning source and reference images...")
+            try:
+                src_img = face_aligner.align(src_img)
+                ref_img = face_aligner.align(ref_img)
+            except Exception as exception:
+                logging.error(exception)
 
         ref_class = torch.tensor([int(ref_class == 'male')]).to(self.device)
 
