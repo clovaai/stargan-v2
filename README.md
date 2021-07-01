@@ -145,10 +145,28 @@ python main.py --mode train --num_domains 3 --w_hpf 0 \
 
 We release a new dataset of animal faces, Animal Faces-HQ (AFHQ), consisting of 15,000 high-quality images at 512×512 resolution. The figure above shows example images of the AFHQ dataset. The dataset includes three domains of cat, dog, and wildlife, each providing about 5000 images. By having multiple (three) domains and diverse images of various breeds per each domain, AFHQ sets a challenging image-to-image translation problem. For each domain, we select 500 images as a test set and provide all remaining images as a training set. To download the dataset, run the following command:
 
-
 ```bash
 bash download.sh afhq-dataset
 ```
+
+
+**[Update: 2021.07.01]** We rebuild the original AFHQ dataset by using high-quality resize filtering (i.e., Lanczos resampling). Please see the [clean FID paper](https://arxiv.org/abs/2104.11222) that brings attention to the unfortunate software library situation for downsampling. We thank to [Alias-Free GAN](https://nvlabs.github.io/alias-free-gan/) authors for their suggestion and contribution to the updated AFHQ dataset. If you use the updated dataset, we recommend to cite not only our paper but also their paper.
+
+The differences from the original dataset are as follows:
+* We resize the images using Lanczos resampling instead of nearest neighbor downsampling.
+* About 2% of the original images had been removed. So the set is now has 15803 images, whereas the original had 16130.
+* Images are saved as PNG format to avoid compression artifacts. This makes the files bigger than the original, but it's worth it.
+
+
+To download the updated dataset, run the following command:
+
+```bash
+bash download.sh afhq-v2-dataset
+```
+
+<p align="left"><img width="99%" src="assets/afhqv2_teaser2.jpg" /></p>
+
+
 
 ## License
 The source code, pre-trained models, and dataset are available under [Creative Commons BY-NC 4.0](https://github.com/clovaai/stargan-v2/blob/master/LICENSE) license by NAVER Corporation. You can **use, copy, tranform and build upon** the material for **non-commercial purposes** as long as you give **appropriate credit** by citing our paper, and indicate if changes were made. 
@@ -170,4 +188,4 @@ If you find this work useful for your research, please cite our paper:
 ```
 
 ## Acknowledgements
-We would like to thank the full-time and visiting Clova AI Research members for their valuable feedback and an early review: especially Seongjoon Oh, Junsuk Choe, Muhammad Ferjad Naeem, and Kyungjune Baek.
+We would like to thank the full-time and visiting Clova AI Research (now NAVER AI Lab) members for their valuable feedback and an early review: especially Seongjoon Oh, Junsuk Choe, Muhammad Ferjad Naeem, and Kyungjune Baek. We also thank Alias-Free GAN authors for their contribution to the updated AFHQ dataset.
