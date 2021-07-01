@@ -47,6 +47,14 @@ elif  [ $FILE == "afhq-dataset" ]; then
     unzip $ZIP_FILE -d ./data
     rm $ZIP_FILE
 
+elif  [ $FILE == "afhq-v2-dataset" ]; then
+    URL=https://www.dropbox.com/s/scckftx13grwmiv/afhq_v2.zip?dl=0
+    ZIP_FILE=./data/afhq_v2.zip
+    mkdir -p ./data
+    wget -N $URL -O $ZIP_FILE
+    unzip $ZIP_FILE -d ./data
+    rm $ZIP_FILE
+
 else
     echo "Available arguments are pretrained-network-celeba-hq, pretrained-network-afhq, celeba-hq-dataset, and afhq-dataset."
     exit 1
