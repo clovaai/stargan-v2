@@ -6,6 +6,14 @@ from flask import Flask
 
 dictConfig(LOGGING_CONFIG)
 
+from datetime import datetime
+
+logging.getLogger().setLevel(0)  # Allows all messages to go through logger, msg to be filtered at handlers
+
+ID = LOGGING_CONFIG['handlers']['instance']['filename'][2:-4]  # Get hexadecimal ID of instance
+
+logging.info('\n' + '='*60 + '\nNew instance started at ' + datetime.now().strftime("%d/%m/%y, %H:%M:%S")[:-3] +
+            '\nInstance ID: {}\n'.format(ID) + '='*60)  # Print instance start message and datetime as quick reference
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
