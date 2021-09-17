@@ -1,4 +1,3 @@
-predict: "predict.py:Predictor"
 build:
   gpu: true
   python_version: "3.8"
@@ -18,6 +17,8 @@ build:
     - "tqdm==4.43.0"
     - "scipy==1.7.1"
     - "Pillow==8.3.2"
+
+predict: "predict.py:Predictor"
 
 
 
