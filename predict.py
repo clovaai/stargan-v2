@@ -1,7 +1,7 @@
+import os
 import argparse
 import tempfile
 from pathlib import Path
-import os
 import shutil
 from munch import Munch
 from torch.backends import cudnn
@@ -15,7 +15,6 @@ from core.utils import save_image
 
 class Predictor(cog.Predictor):
     def setup(self):
-
         self.args = parse_args()
 
     @cog.input(
@@ -36,52 +35,53 @@ class Predictor(cog.Predictor):
         help="reference facial image (decides breed/style for animals or gender/style for humans)",
     )
     def predict(self, src, ref, model):
-        src_dir = "input/cog_temp/src/dummy"
-        ref_dir = "input/cog_temp/ref/dummy"
-        os.makedirs(src_dir, exist_ok=True)
-        os.makedirs(ref_dir, exist_ok=True)
-        self.args.w_hpf = 0 if model == "animal" else 1
-        self.args.checkpoint_dir = (
-            "expr/checkpoints/afhq"
-            if model == "animal"
-            else "expr/checkpoints/celeba_hq"
-        )
-        src_path = os.path.join(src_dir, os.path.basename(src))
-        ref_path = os.path.join(ref_dir, os.path.basename(ref))
-        shutil.copy(str(src), src_path)
-        shutil.copy(str(ref), ref_path)
+        try:
+            src_dir = "input/cog_temp/src/dummy"
+            ref_dir = "input/cog_temp/ref/dummy"
+            os.makedirs(src_dir, exist_ok=True)
+            os.makedirs(ref_dir, exist_ok=True)
+            self.args.w_hpf = 0 if model == "animal" else 1
+            self.args.checkpoint_dir = (
+                "expr/checkpoints/afhq"
+                if model == "animal"
+                else "expr/checkpoints/celeba_hq"
+            )
+            src_path = os.path.join(src_dir, os.path.basename(src))
+            ref_path = os.path.join(ref_dir, os.path.basename(ref))
+            shutil.copy(str(src), src_path)
+            shutil.copy(str(ref), ref_path)
 
-        self.args.src_dir = "input/cog_temp/src/"
-        self.args.ref_dir = "input/cog_temp/ref/"
-        # args.num_domains = 1
-        out_path = Path(tempfile.mkdtemp()) / "out.png"
+            self.args.src_dir = "input/cog_temp/src/"
+            self.args.ref_dir = "input/cog_temp/ref/"
+            # args.num_domains = 1
+            out_path = Path(tempfile.mkdtemp()) / "out.png"
 
-        cudnn.benchmark = True
-        torch.manual_seed(self.args.seed)
+            cudnn.benchmark = True
+            torch.manual_seed(self.args.seed)
 
-        solver = SingleSolver(self.args)
-        # we only use sample mode
+            solver = SingleSolver(self.args)
+            # we only use sample mode
 
-        loaders = Munch(
-            src=get_test_loader(
-                root=self.args.src_dir,
-                img_size=self.args.img_size,
-                batch_size=self.args.val_batch_size,
-                shuffle=False,
-                num_workers=self.args.num_workers,
-            ),
-            ref=get_test_loader(
-                root=self.args.ref_dir,
-                img_size=self.args.img_size,
-                batch_size=self.args.val_batch_size,
-                shuffle=False,
-                num_workers=self.args.num_workers,
-            ),
-        )
-        solver.single_sample(loaders, str(out_path))
-
-        clean_folder(src_dir)
-        clean_folder(ref_dir)
+            loaders = Munch(
+                src=get_test_loader(
+                    root=self.args.src_dir,
+                    img_size=self.args.img_size,
+                    batch_size=self.args.val_batch_size,
+                    shuffle=False,
+                    num_workers=self.args.num_workers,
+                ),
+                ref=get_test_loader(
+                    root=self.args.ref_dir,
+                    img_size=self.args.img_size,
+                    batch_size=self.args.val_batch_size,
+                    shuffle=False,
+                    num_workers=self.args.num_workers,
+                ),
+            )
+            solver.single_sample(loaders, str(out_path))
+        finally:
+            clean_folder(src_dir)
+            clean_folder(ref_dir)
         return out_path
 
 
@@ -287,7 +287,6 @@ class SingleSolver(Solver):
 
 
 def save_translated_image(nets, args, x_src, x_ref, y_ref, filename):
-
     masks = nets.fan.get_heatmap(x_src) if args.w_hpf > 0 else None
     s_ref = nets.style_encoder(x_ref, y_ref)
     x_fake = nets.generator(x_src, s_ref, masks=masks)
