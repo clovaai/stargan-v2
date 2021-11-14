@@ -43,6 +43,7 @@ def calculate_metrics(nets, args, step, mode):
                                          img_size=args.img_size,
                                          batch_size=args.val_batch_size,
                                          imagenet_normalize=False,
+                                         num_workers=args.num_workers,
                                          drop_last=True)
 
         for src_idx, src_domain in enumerate(src_domains):
@@ -50,7 +51,8 @@ def calculate_metrics(nets, args, step, mode):
             loader_src = get_eval_loader(root=path_src,
                                          img_size=args.img_size,
                                          batch_size=args.val_batch_size,
-                                         imagenet_normalize=False)
+                                         imagenet_normalize=False,
+                                         num_workers=args.num_workers)
 
             task = '%s2%s' % (src_domain, trg_domain)
             path_fake = os.path.join(args.eval_dir, task)
