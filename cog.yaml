@@ -1,0 +1,21 @@
+build:
+  gpu: true
+  python_version: "3.8"
+  system_packages:
+    - "libgl1-mesa-glx"
+    - "libglib2.0-0"
+  python_packages:
+    - "torch==1.8.0"
+    - "torchvision==0.9.0"
+    - "numpy==1.21.1"
+    - "ipython==7.21.0"
+    - "opencv-python==4.3.0.38"
+    - "ffmpeg==1.4"
+    - "ffmpeg-python==0.2.0"
+    - "scikit-image==0.16.2"
+    - "munch==2.5.0"
+    - "tqdm==4.43.0"
+    - "scipy==1.7.1"
+    - "Pillow==8.3.2"
+
+predict: "predict.py:Predictor"
