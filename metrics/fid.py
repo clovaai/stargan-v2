@@ -60,11 +60,11 @@ def frechet_distance(mu, cov, mu2, cov2):
 
 
 @torch.no_grad()
-def calculate_fid_given_paths(paths, img_size=256, batch_size=50):
+def calculate_fid_given_paths(args, paths, img_size=256, batch_size=50):
     print('Calculating FID given paths %s and %s...' % (paths[0], paths[1]))
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     inception = InceptionV3().eval().to(device)
-    loaders = [get_eval_loader(path, img_size, batch_size) for path in paths]
+    loaders = [get_eval_loader(path, img_size, batch_size, num_workers=args.num_workers) for path in paths]
 
     mu, cov = [], []
     for loader in loaders:
@@ -84,8 +84,10 @@ if __name__ == '__main__':
     parser.add_argument('--paths', type=str, nargs=2, help='paths to real and fake images')
     parser.add_argument('--img_size', type=int, default=256, help='image resolution')
     parser.add_argument('--batch_size', type=int, default=64, help='batch size to use')
+    parser.add_argument('--num_workers', type=int, default=4, help='Number of workers used in DataLoader')
+    
     args = parser.parse_args()
-    fid_value = calculate_fid_given_paths(args.paths, args.img_size, args.batch_size)
+    fid_value = calculate_fid_given_paths(args, args.paths, args.img_size, args.batch_size)
     print('FID: ', fid_value)
 
 # python -m metrics.fid --paths PATH_REAL PATH_FAKE
