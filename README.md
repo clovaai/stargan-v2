@@ -1,3 +1,5 @@
+This is a fork of StarGan v2 for reproduction purposes. We implemented some changes to accommodate dependency differences as well as analyzing different components.
+
 
 ## StarGAN v2 - Official PyTorch Implementation
 
