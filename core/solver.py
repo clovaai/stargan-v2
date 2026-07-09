@@ -132,6 +132,7 @@ class Solver(nn.Module):
             self._reset_grad()
             g_loss.backward()
             optims.generator.step()
+            optims.style_encoder.step()
 
             # compute moving average of network parameters
             moving_average(nets.generator, nets_ema.generator, beta=0.999)
